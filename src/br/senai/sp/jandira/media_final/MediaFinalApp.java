@@ -3,12 +3,12 @@ package br.senai.sp.jandira.media_final;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class MediaFinalApp extends Application {
 
@@ -98,7 +98,88 @@ public class MediaFinalApp extends Application {
         stage.show();
 
         //Eventos de click dos botões
-        //buttonCalcularMedia.addEventHandler();
+        buttonCalcularMedia.setOnAction( click ->{
+            System.out.println("Botão clicado");
+            String nomeDigitado = textFieldNome.getText();
+            labelAluno.setText("Nome do aluno: " + nomeDigitado);
+
+            //CALCULAR MÉDIA
+            //OBTER AS NOTAS
+
+            //CRIAR VETOR (array) DE NOTAS
+            double[] notas = new double[4];
+            String[] notasStr = new String[4];
+
+            notasStr[0] = textFieldNota1.getText();
+            notas[0] = Double.parseDouble(notasStr[0]);
+
+            notasStr[1] = textFieldNota2.getText();
+            notas[1] = Double.parseDouble(notasStr[1]);
+
+            notasStr[2] = textFieldNota3.getText();
+            notas[2] = Double.parseDouble(notasStr[2]);
+
+            notasStr[3] = textFieldNota4.getText();
+            notas[3] = Double.parseDouble(notasStr[3]);
+
+            // USO DE LOOP while (ENQUANTO)
+
+
+            //Calculo
+            int i = 0;
+            double mediaFinal = 0.0;
+
+                    while (i < notas.length) {
+                        mediaFinal = mediaFinal + notas[i];
+                        i = i + 1;
+
+                    }
+                    mediaFinal = mediaFinal / notas.length;
+
+                        String mediaFinalStr = String.format("%.2f", mediaFinal); // deixa 2 casas decimais
+
+            labelMediaFInal.setText("Média Final: " + mediaFinalStr);
+
+            //Aprovado ou reprovado
+
+            String situacao = "";
+
+            if (mediaFinal < 4){
+                situacao = "REPROVADO";
+            }else if (mediaFinal >= 6 ){
+                situacao = "APROVADO";
+            } else {
+                situacao = "RECUPERAÇÃO";
+            }
+
+            labelSituacao.setText("Situçao: " + situacao);
+
+
+        });
+
+        buttonLimpar.setOnAction( click -> {
+            textFieldNome.setText("");
+            textFieldNota1.setText("");
+            textFieldNota2.setText("");
+            textFieldNota3.setText("");
+            textFieldNota4.setText("");
+            labelMediaFInal.setText("");
+            labelAluno.setText("");
+            labelSituacao.setText("");
+            textFieldNome.requestFocus();
+        });
+
+        buttonSair.setOnAction( click ->{
+            Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "confirma a saída?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> botaoPrecionado = alerta.showAndWait();
+            if (botaoPrecionado.get() == ButtonType.YES ) {
+                Alert alerta2 = new Alert(Alert.AlertType.INFORMATION, "até logo");
+                alerta2.showAndWait();
+                System.exit(0);
+            }
+        });
+
+
 
     }
 }
